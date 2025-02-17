@@ -1,7 +1,24 @@
-# Bayesian Data Analysis
-# NFL point spreads
+---
+title: "Bayesian Data Analysis"
+toc: true
+number-sections: false
+format: 
+  html:
+    code-fold: true
+editor: visual
+---
 
-df <- read_table("data/NFL point spreads.txt") %>%
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=6, fig.width=8, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+library(here)
+source("prep.R")
+```
+
+## NFL Point Spreads
+
+```{r}
+df <- read_table("../data/NFL point spreads.txt") %>%
     mutate(diff=favorite-underdog,
            sprd_diff = diff-spread,
            fav_win = ifelse(diff>0, 1,0),
@@ -51,11 +68,7 @@ ggplot(spr, aes(spread_trunc, win)) +
          caption="37 spreads greater\nthan 14 coded to 14") +
     theme(axis.title.y=element_text(angle=0, vjust=.5))
 
-ggsave("viz/win probability vs point spread.png",
-       device="png",
-       type="cairo",
-       height=4,
-       width=7.4)
+
 
 lm(fav_win ~ spread + home + as.factor(week),
    data=df) %>%
@@ -72,11 +85,7 @@ ggplot(df, aes(sprd_diff)) +
          y="",
          title="Difference between outcome and spread")
 
-ggsave("viz/diff between outcome and spread.png",
-       device="png",
-       type="cairo",
-       height=4,
-       width=6)
+
 
 psych::describe(df$sprd_diff)
 
@@ -100,4 +109,23 @@ tes
 ggplot(tes, aes(spread, prob)) + 
     geom_point() +
     stat_smooth()
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
 
