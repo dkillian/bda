@@ -31,7 +31,8 @@ ggplot(spr, aes(spread_trunc, win)) +
     geom_point(color="dodgerblue2",
                size=1.8,
                ) +
-    stat_smooth(color="dodgerblue2") +
+    stat_smooth(color="dodgerblue2",
+                se=F) +
     scale_x_continuous(breaks=seq(0,20,1)) +
     scale_y_continuous(limits=c(0,1),
                        breaks=seq(0,1,.1),
