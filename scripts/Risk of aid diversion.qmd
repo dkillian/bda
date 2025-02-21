@@ -2,10 +2,11 @@
 title: "Assigning probabilities from risk scores"
 toc: true
 number-sections: false
-format: 
+format:
   html:
     code-fold: true
 editor: visual
+output-dir: ../docs
 ---
 
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
@@ -22,7 +23,6 @@ d <- read_csv("../data/spread_diversion.csv")
 ```{r}
 head(d) %>% flextable()
 ```
-
 
 ```{r}
 ggplot(d, aes(risk)) + 
@@ -41,7 +41,7 @@ ggplot(d, aes(risk)) +
 psych::describe(d$diversion) %>% flextable()
 ```
 
-## Probability of diversion for each risk score 
+## Probability of diversion for each risk score
 
 ```{r}
 
@@ -56,7 +56,6 @@ byScore <- d %>%
 
 byScore %>% flextable()
 ```
-
 
 ```{r}
 byScorePlot <- ggplot(byScore, aes(risk, div)) + 
@@ -88,7 +87,8 @@ byScorePlot <- ggplot(byScore, aes(risk, div)) +
 byScorePlot
 
 ```
-What is the average incremental change in the probability of aid diversion, for each 1-point increase in the risk score? 
+
+What is the average incremental change in the probability of aid diversion, for each 1-point increase in the risk score?
 
 ```{r}
 l1 <- lm(diversion ~ risk,
@@ -103,7 +103,7 @@ l1_t %>%
                    digits=3)
 ```
 
-Is a linear approximation appropriate? 
+Is a linear approximation appropriate?
 
 ```{r}
 g1 <- glm(diversion ~ risk,
@@ -124,7 +124,6 @@ g1_t %>%
 exp(.15)
 ```
 
-
 ```{r}
 library(margins)
 margins(g1) %>% 
@@ -134,14 +133,13 @@ margins(g1) %>%
                    digits=3)
 ```
 
-
-What if our client asks for specific predictions? For example, what if the client asks about the probability of aid diversion, if we report a risk score of 11? 
-
+What if our client asks for specific predictions? For example, what if the client asks about the probability of aid diversion, if we report a risk score of 11?
 
 ```{r}
 byScorePlot + stat_smooth(color="dodgerblue2",
                           alpha=.4)
 ```
+
 ```{r}
 library(margins)
 g1_predicted <- cplot(g1, draw=F)
@@ -149,7 +147,6 @@ g1_predicted <- cplot(g1, draw=F)
 head(g1_predicted) %>% flextable()
 
 ```
-
 
 ```{r}
 
@@ -167,7 +164,6 @@ tmp2 <- tibble(risk=g1_predicted$xvals,
 
 mrg <- rbind(tmp1, tmp2)
 ```
-
 
 ```{r}
 ggplot(mrg, aes(risk, div, color=type)) +
@@ -189,6 +185,7 @@ ggplot(mrg, aes(risk, div, color=type)) +
   theme(legend.position="bottom",
         legend.title=element_blank())
 ```
+
 ## Takeaways
 
 We have some information about the risk of aid diversion
@@ -200,5 +197,3 @@ We test and validate the value of the risk score in predicting aid diversion
 We recognize where predicted probabilities may be more appropriate than reported probabilities
 
 Thank you!
-
-
